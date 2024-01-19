@@ -48,9 +48,9 @@ class _SocioListState extends State<SocioList> {
         if(socios.hasData){
           return sociosList(socios.data);
 
-        }
-        return const Center(child: CircularProgressIndicator());
-        }
+        }else{
+          return const Center(child: CircularProgressIndicator());
+        }}
       );
       
       

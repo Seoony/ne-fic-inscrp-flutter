@@ -8,10 +8,9 @@ class APISocio {
 
   static Future<List<Socio>?> getSocios() async {
     Map<String, String> requestHeaders = {
-      'Content-type': 'application/json',
-      'Accept': 'application/json',
+      'Content-Type': 'application/json',
     };
-    var url = Uri.http(
+    var url = Uri.https(
       Config.API_URL,
       Config.sociosApi,
     );

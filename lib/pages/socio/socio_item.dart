@@ -12,81 +12,134 @@ class SocioItem extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     return Card(
-      elevation: 0,
-      margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-      child: Container(
-        width: 200,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(50),
-        ),
-        child: cartItem(context),
-      )
-    );
+        elevation: 0,
+        margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+        child: Container(
+          width: 200,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(50),
+          ),
+          child: cartItem(context),
+        ));
   }
 
-  Widget cartItem(context){
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Container(
-          width: 120,
-          alignment: Alignment.center,
-          margin: const EdgeInsets.all(10),
-
-        ),
-        Padding(
-          padding: const EdgeInsets.all(8),
-          child: Column(
+  Widget cartItem(context) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: SizedBox(
+        height: 20,
+        child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "${socio!.nombres} ${socio!.apellidos}",
-                style: const TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
+            children: <Widget>[
+              Container(
+                width: 10,
+                alignment: Alignment.center,
+                child: Text(
+                  "${socio!.id}",
+                  style: const TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
-              const SizedBox(
-                height: 10,
+              const VerticalDivider(
+                color: Colors.black,
+                thickness: 1,
+                width: 2,
               ),
-              SizedBox(
-                width: MediaQuery.of(context).size.width - 180,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              Container(
+                width: 100,
+                alignment: Alignment.center,
+                child: Text(
+                  "${socio!.nombres}",
+                  style: const TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              const VerticalDivider(
+                color: Colors.black,
+                thickness: 1,
+                width: 2,
+              ),
+              Container(
+                width: 100,
+                alignment: Alignment.center,
+                child: Text(
+                  "${socio!.apellidos}",
+                  style: const TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              const VerticalDivider(
+                color: Colors.black,
+                thickness: 1,
+                width: 2,
+              ),
+              Container(
+                width: 68,
+                alignment: Alignment.center,
+                child: Text(
+                  "${socio!.dni}",
+                  style: const TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                  ),
+                )
+              ),
+              const VerticalDivider(
+                color: Colors.black,
+                thickness: 1,
+                width: 2,
+              ),
+              GestureDetector(
+                child: const Icon(Icons.edit),
+                onTap: () {
+                  Navigator.of(context).pushNamed(
+                    '/socio-edit',
+                    arguments: {
+                      'socio': socio,
+                    },
+                  );
+                },
+              ),
+              GestureDetector(
+                child: const Icon(
+                  Icons.delete,
+                  color: Colors.red,
+                ),
+                onTap: () {
+                  onDelete!(socio);
+                },
+              ),
+              /*Padding(
+                padding: const EdgeInsets.all(8),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    GestureDetector(
-                      child: const Icon(
-                        Icons.edit),
-                      onTap: () {
-                        Navigator.of(context).pushNamed(
-                          '/socio-edit',
-                          arguments: {
-                            'socio': socio,
-                          },
-
-                        );
-                      },
+                    const SizedBox(
+                      height: 10,
                     ),
-                    GestureDetector(
-                      child: const Icon(
-                        Icons.delete,
-                        color: Colors.red,),
-                      onTap: () {
-                        onDelete!(socio);
-                      },
-                    ),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width - 180,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [],
+                      ),
+                    )
                   ],
                 ),
-              )
-            ],
-          ),
-        )
-      ]
+              )*/
+            ]),
+      ),
     );
   }
 }

@@ -1,4 +1,5 @@
 class Config {
-  static const String API_URL = 'https://seoony.pythonanywhere.com';
+  // ignore: constant_identifier_names
+  static const String API_URL = 'seoony.pythonanywhere.com';
   static const String sociosApi = '/socios/';
 }

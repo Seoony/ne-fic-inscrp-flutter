@@ -15,9 +15,9 @@ class MenuState extends State<Menu> {
   getDrawerItemWidget(int pos) {
     switch (pos) {
       case 0:
-        return inicio();
+        return const inicio();
       case 1:
-        return SocioList();
+        return const SocioList();
       default:
         return const Text("Error");
     }
@@ -41,8 +41,8 @@ class MenuState extends State<Menu> {
         child: ListView(
           children: <Widget>[
             const UserAccountsDrawerHeader(
-              accountName: Text(""),
-              accountEmail: Text(""),
+              accountName: Text("NE"),
+              accountEmail: Text("ne@unsa.pe"),
               currentAccountPicture: CircleAvatar(
                 backgroundColor: Colors.white,
               ),
@@ -54,10 +54,20 @@ class MenuState extends State<Menu> {
               onTap: () {
                 _onSelectItem(0);
               },
-            )
+            ),
+            const Divider(),
+            ListTile(
+              title: const Text("Socios"),
+              leading: const Icon(Icons.people),
+              selected: (1 == _selectDrawerItem),
+              onTap: () {
+                _onSelectItem(1);
+              },
+            ),
           ]
         )
-      )
+      ),
+      body: getDrawerItemWidget(_selectDrawerItem),
     );
   }
 }

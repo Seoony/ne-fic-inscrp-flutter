@@ -1,60 +1,20 @@
-import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'models/socio.dart';
 import 'dart:convert';
-import 'package:ficha_inscripcion/config.dart';
+import 'package:flutter/material.dart';
+import'package:http/http.dart' as http;
+import 'package:ficha_inscripcion/menu.dart';
+import 'package:ficha_inscripcion/pages/socio/socio_list.dart';
 
-void main() {
-  runApp(MyApp());
-}
+void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+  static const String _title = 'Ficha de Inscripcion';
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Listado de Socios'),
-        ),
-        body: FutureBuilder<List<Socio>>(
-          future: fetchSocios(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const CircularProgressIndicator();
-            } else if (snapshot.hasError) {
-              return Text('Error: ${snapshot.error}');
-            } else {
-              List<Socio> socios = snapshot.data!;
-
-              return ListView.builder(
-                itemCount: socios.length,
-                itemBuilder: (context, index) {
-                  Socio socio = socios[index];
-                  return ListTile(
-                    title: Text(socio.nombres??""),
-                    subtitle: Text(socio.apellidos??""),
-                  );
-                },
-              );
-            }
-          },
-        ),
-      ),
+      title: _title,
+      home: Menu(),
     );
-  }
-  Future<List<Socio>> fetchSocios() async {
-    // Lógica para obtener la lista de socios desde el backend (Django)
-    // Puedes usar http, dio u otro paquete para realizar la solicitud HTTP.
-
-    // Ejemplo con http:
-    final response = await http.get(Uri.parse(Config.API_URL+Config.sociosApi));
-
-    if (response.statusCode == 200) {
-      Iterable list = json.decode(response.body);
-      return list.map((model) => Socio.fromJson(model)).toList();
-    } else {
-      throw Exception('Error al cargar la lista de socios');
-    }
   }
 }
