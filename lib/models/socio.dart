@@ -37,13 +37,24 @@ class Socio {
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'nombres': nombres,
-      'apellidos': apellidos,
-      'dni': dni,
-      'estado': estado,
-    };
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (id != null) {
+      data['id'] = id;
+    }
+    if (nombres != null){
+      data['nombres'] = nombres;
+    }
+    if (apellidos != null){
+      data['apellidos'] = apellidos;
+    }
+    if (dni != null){
+      data['dni'] = dni;
+    }
+    data['dni'] = dni;
+    if (estado != null) {
+      data['estado'] = "A";
+    }
+    return data;
   }
 
   factory Socio.fromJson(Map<String, dynamic> json) {

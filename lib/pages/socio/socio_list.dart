@@ -67,54 +67,141 @@ class _SocioListState extends State<SocioList> {
           Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/add-socio');
-                  
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blue,
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 10, horizontal: 30,),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(50),
-                    ),
-                  ),
-                  child: const Text(
-                    'Agregar Socio',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 18,
-                    ),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, '/add-socio');
+                
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.blue,
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 10, horizontal: 30,),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
                   ),
                 ),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.pushNamed(
-                      context, '/home'
-                    );
-                  
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blue,
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 10, horizontal: 30,),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(50),
-                    ),
+                child: const Text(
+                  'Agregar Socio',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 18,
                   ),
-                  
-                  child: const Text(
-                    'Menu',
-                    style: TextStyle(color: Colors.black, fontSize: 18,),
-                  ),
-                  ),
-                ],
+                ),
               ),
-              ListView.builder(
+              Table(
+                columnWidths: const {
+                  0: FlexColumnWidth(2),
+                  1: FlexColumnWidth(5),
+                  2: FlexColumnWidth(5),
+                  3: FlexColumnWidth(4),
+                  4: FlexColumnWidth(2),
+                  5: FlexColumnWidth(2),
+                },
+                children: [
+                  const TableRow(
+                    decoration: BoxDecoration(
+                      color: Color.fromARGB(255, 0, 94, 170),
+                    ),
+                    children: [
+                      TableCell(
+                        child: Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Text(
+                            'Id',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                      TableCell(
+                        child: Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Text(
+                            'Nombres',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                      TableCell(
+                        child: Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Text(
+                            'Apellidos',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                      TableCell(
+                        child: Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Text(
+                            'DNI',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                      TableCell(
+                        child: Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Text(
+                            'ER',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                      TableCell(
+                        child: Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Text(
+                            '',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  ...socios.map<TableRow>((socio) {
+                  return TableRow(
+                    decoration: const BoxDecoration(
+                      color: Colors.white,
+                    ),
+                    children: SocioItem(
+                        socio: socio,
+                        onDelete: (Socio socio) {
+                          setState(() {
+                            isApiCallProcess = true;
+                          });
+                          APISocio.deleteSocio(socio.id!).then(
+                            (response) {
+                              setState(() {
+                                isApiCallProcess = false;
+                              });
+                            }  
+                          );
+                        },
+                      ).buildRow(context),
+                  );
+                }).toList(),
+                ],
+              )
+              /*ListView.builder(
                 shrinkWrap: true,
                 physics: const ClampingScrollPhysics(),
                 scrollDirection: Axis.vertical,
@@ -136,7 +223,7 @@ class _SocioListState extends State<SocioList> {
                     },
                   );
                 },
-              ),
+              ),*/
             ],
           ),  
         ],

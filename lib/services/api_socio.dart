@@ -26,11 +26,13 @@ class APISocio {
   static Future<bool> saveSocio(
       Socio socio, bool isEditMode
       ) async {
-    var socioURL = "${Config.sociosApi}/";
+    var socioURL = Config.sociosApi;
     if (isEditMode) {
-      socioURL += "${socio.id}/";
+      socioURL += "${socio.id}/update/";
+    }else{
+      socioURL += "create/";
     }
-    var url = Uri.http(
+    var url = Uri.https(
       Config.API_URL,
       socioURL,
     );
@@ -39,10 +41,15 @@ class APISocio {
     request.fields['nombres'] = socio.nombres!;
     request.fields['apellidos'] = socio.apellidos!;
     request.fields['dni'] = socio.dni!;
-    request.fields['estado'] = socio.estado!;
+    if(socio.estado == null){
+      request.fields['estado'] = "A";
+    }else{
+      request.fields['estado'] = socio.estado!;
+    }
+    print(request);
 
     var response = await request.send();
-    if (response.statusCode >= 201 && response.statusCode < 300){
+    if (response.statusCode >= 200 && response.statusCode < 300){
       return true;
     }
     else {
@@ -55,7 +62,7 @@ class APISocio {
     };
     var url = Uri.http(
       Config.API_URL,
-      "${Config.sociosApi}/$socioId/",
+      "${Config.sociosApi}/$socioId/delete/",
     );
     var response = await client.delete(url, headers: requestHeaders);
     if (response.statusCode == 200){

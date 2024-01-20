@@ -138,10 +138,10 @@ class _SocioAddEditState extends State<SocioAddEdit> {
           ),
           Center(
             child: FormHelper.submitButton(
-              "Save",
+              "Guardar",
               () {
                 if(validateAndSave()) {
-                  //print(socio!.toJson());
+                  print(socio!.toJson());
                   setState(() {
                     isApiCallProcess = true;
                   });
@@ -151,6 +151,7 @@ class _SocioAddEditState extends State<SocioAddEdit> {
                     ).then((response) {
                       setState(() {
                         isApiCallProcess = false;
+                        print(response);
                       });
                       if(response){
                         Navigator.pushNamedAndRemoveUntil(
