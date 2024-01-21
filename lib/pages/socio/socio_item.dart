@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:ficha_inscripcion/models/socio.dart';
+import 'package:ficha_inscripcion/services/api_socio.dart';
 
 class SocioItem extends StatelessWidget {
   final Socio? socio;
@@ -18,55 +21,57 @@ class SocioItem extends StatelessWidget {
 
 
   List<Widget> buildRow(BuildContext context) {
+    TextStyle textStyle;
+    if (socio!.estado == "I") {
+      textStyle = const TextStyle(
+        fontStyle: FontStyle.italic,
+        color: Color.fromARGB(255, 59, 59, 59),
+      );
+    } else if (socio!.estado == "*") {
+      textStyle = const TextStyle(
+        decoration: TextDecoration.lineThrough,
+        color: Colors.grey,
+      );
+    } else {
+      textStyle = const TextStyle(
+        color: Colors.black,
+        fontWeight: FontWeight.bold,
+      );
+    }
     return [
         Container(
           padding: const EdgeInsets.all(8),
           child: Text(
             "${socio!.id}",
-            style: const TextStyle(
-              color: Colors.black,
-              fontWeight: FontWeight.bold,
-            ),
+            style: textStyle,
           ),
         ),
         Container(
           padding: const EdgeInsets.all(8),
           child: Text(
-            "${socio!.nombres}",
-            style: const TextStyle(
-              color: Colors.black,
-              fontWeight: FontWeight.bold,
-            ),
+            utf8.decode(latin1.encode("${socio!.nombres}")),
+            style: textStyle,
           ),
         ),
         Container(
           padding: const EdgeInsets.all(8),
           child: Text(
-            "${socio!.apellidos}",
-            style: const TextStyle(
-              color: Colors.black,
-              fontWeight: FontWeight.bold,
-            ),
+            utf8.decode(latin1.encode("${socio!.apellidos}")),
+            style: textStyle,
           ),
         ),
         Container(
           padding: const EdgeInsets.all(8),
           child: Text(
             "${socio!.dni}",
-            style: const TextStyle(
-              color: Colors.black,
-              fontWeight: FontWeight.bold,
-            ),
+            style: textStyle,
           ),
         ),
         Container(
           padding: const EdgeInsets.all(8),
           child: Text(
             "${socio!.estado}",
-            style: const TextStyle(
-              color: Colors.black,
-              fontWeight: FontWeight.bold,
-            ),
+            style: textStyle,
           ),
         ),
         Container(
@@ -90,8 +95,8 @@ class SocioItem extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 Text("ID: ${socio!.id}"),
-                                Text("Nombres: ${socio!.nombres}"),
-                                Text("Apellidos: ${socio!.apellidos}"),
+                                Text("Nombres:${utf8.decode(latin1.encode("${socio!.nombres}"))}"),
+                                Text("Apellidos: ${utf8.decode(latin1.encode("${socio!.apellidos}"))}"),
                                 Text("DNI: ${socio!.dni}"),
                                 Text("Estado: ${socio!.estado}"),
                               ],
@@ -100,7 +105,6 @@ class SocioItem extends StatelessWidget {
                         ),
                         actions: <Widget>[
                           TextButton(
-                            child: const Text("Editar"),
                             onPressed: () {
                               Navigator.of(context).pushNamed(
                                 '/edit-socio',
@@ -109,22 +113,92 @@ class SocioItem extends StatelessWidget {
                                 },
                               );
                             },
+                            style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all<Color>(Colors.green.shade200),
+                              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(5.0),
+                                )
+                              )
+                            ),
+                            child: const Text("Editar",
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
                           ),
                           TextButton(
-                            child: Text(socio!.estado == "A" ? "Inactivar" : "Activar"),
-                            onPressed: () {},
+                            onPressed: () async {
+                              bool response;
+                              if (socio!.estado == "A") {
+                                response = await APISocio.deactivateSocio(socio!.id!);
+                              } else {
+                                response = await APISocio.activateSocio(socio!.id!);
+                              }
+                              if (response) {
+                                // ignore: use_build_context_synchronously
+                                Navigator.pushNamedAndRemoveUntil(
+                                  context,
+                                  '/list-socio',
+                                  (route) => false,
+                                );
+                              }
+                            },
+                            style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all<Color>(Colors.yellow.shade600),
+                              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(5.0),
+                                )
+                              )
+                            ),
+                            child: Text(socio!.estado == "A" ? "Inactivar" : "Activar",
+                              style: const TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,),
+                            ),
                           ),
                           TextButton(
-                            child: const Text("Eliminar"),
                             onPressed: () {
                               onDelete!(socio);
+                              Navigator.of(context).pop();
                             },
+                            style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all<Color>(Colors.red.shade300),
+                              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(5.0),
+                                )
+                              )
+                            ),
+                            child: const Text(
+                              "Eliminar",
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
                           ),
                           TextButton(
-                            child: const Text("Cerrar"),
                             onPressed: () {
                               Navigator.of(context).pop();
                             },
+                            style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all<Color>(Colors.blue.shade300),
+                              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(5.0),
+                                )
+                              )
+                            ),
+                            child: const Text(
+                              "Cerrar",
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
                           ),
                         ],
                       );

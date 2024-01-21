@@ -7,6 +7,7 @@ import 'package:snippet_coder_utils/FormHelper.dart';
 import 'package:snippet_coder_utils/ProgressHUD.dart';
 import 'package:snippet_coder_utils/hex_color.dart';
 import 'package:ficha_inscripcion/config.dart';
+import 'package:ficha_inscripcion/pages/socio/socio_list.dart';
 
 class SocioAddEdit extends StatefulWidget {
   const SocioAddEdit({Key? key}) : super(key: key);
@@ -141,7 +142,6 @@ class _SocioAddEditState extends State<SocioAddEdit> {
               "Guardar",
               () {
                 if(validateAndSave()) {
-                  print(socio!.toJson());
                   setState(() {
                     isApiCallProcess = true;
                   });
@@ -151,13 +151,11 @@ class _SocioAddEditState extends State<SocioAddEdit> {
                     ).then((response) {
                       setState(() {
                         isApiCallProcess = false;
-                        print(response);
                       });
                       if(response){
-                        Navigator.pushNamedAndRemoveUntil(
+                        Navigator.pushNamed(
                           context,
-                          '/list-socio',
-                          (route) => false,
+                          '/list-socio',                          
                         );
                       } else {
                         FormHelper.showSimpleAlertDialog(

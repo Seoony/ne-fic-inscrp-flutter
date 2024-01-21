@@ -6,7 +6,10 @@ import 'package:ficha_inscripcion/pages/socio/socio_item.dart';
 import 'package:snippet_coder_utils/ProgressHUD.dart';
 
 class SocioList extends StatefulWidget {
-  const SocioList({Key? key}) : super(key: key);
+  final bool getAll;
+  final Key? key;
+
+  const SocioList({this.key, this.getAll = false}) : super(key: key);
 
   @override
   _SocioListState createState() => _SocioListState();
@@ -33,14 +36,14 @@ class _SocioListState extends State<SocioList> {
         inAsyncCall: isApiCallProcess,
         opacity: 0.3,
         key: UniqueKey(),
-        child: loadSocios(),
+        child: loadSocios(widget.getAll),
       ),
     );    
   }
 
-  Widget loadSocios() {
+  Widget loadSocios(bool getAll) {
     return FutureBuilder(
-      future: APISocio.getSocios(),
+      future: getAll ? APISocio.getAllSocios() : APISocio.getSocios(),
       builder: (
         BuildContext context,
         AsyncSnapshot<List<Socio>?> socios,
@@ -57,9 +60,6 @@ class _SocioListState extends State<SocioList> {
   }
   Widget sociosList(socios) {
     return SingleChildScrollView(
-      padding: const EdgeInsets.symmetric(
-        vertical: 20,
-      ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -67,25 +67,74 @@ class _SocioListState extends State<SocioList> {
           Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, '/add-socio');
-                
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blue,
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 10, horizontal: 30,),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-                child: const Text(
-                  'Agregar Socio',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 18,
-                  ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/home');
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.blue,
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 10, horizontal: 30,),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                      ),
+                      child: const Text(
+                        'INICIO',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 18,
+                        ),
+                      ),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/add-socio');
+                      
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.blue,
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 10, horizontal: 30,),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                      ),
+                      child: const Text(
+                        'Agregar Socio',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 18,
+                        ),
+                      ),
+                    ),
+                    widget.getAll ? Container() :  ElevatedButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/list-socio', arguments: !widget.getAll);
+                        
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Color.fromARGB(255, 95, 163, 218),
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 10, horizontal: 30,),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                      ),
+                      child: Text(
+                        widget.getAll ? 'Ocultar Eliminados' : 'Mostrar TODOS',
+                        style: const TextStyle(
+                          color: Color.fromARGB(255, 255, 255, 255),
+                          fontSize: 18,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
               Table(
@@ -95,7 +144,7 @@ class _SocioListState extends State<SocioList> {
                   2: FlexColumnWidth(5),
                   3: FlexColumnWidth(4),
                   4: FlexColumnWidth(2),
-                  5: FlexColumnWidth(2),
+                  5: FlexColumnWidth(1.5),
                 },
                 children: [
                   const TableRow(
