@@ -1,21 +1,22 @@
+
 import 'package:flutter/material.dart';
-import 'package:ficha_inscripcion/models/socio.dart';
-import 'package:ficha_inscripcion/services/api_socio.dart';
-import 'package:ficha_inscripcion/pages/socio/socio_item.dart';
+import 'package:ficha_inscripcion/models/tipo_deporte.dart';
+import 'package:ficha_inscripcion/services/api_tipo_deporte.dart';
+import 'package:ficha_inscripcion/pages/tipo_deporte/tipo_deporte_item.dart';
 import 'package:snippet_coder_utils/ProgressHUD.dart';
 
-class SocioList extends StatefulWidget {
+class TipoDeporteList extends StatefulWidget {
   final bool getAll;
   final Key? key;
 
-  const SocioList({this.key, this.getAll = false}) : super(key: key);
+  const TipoDeporteList({this.key, this.getAll = false}) : super(key: key);
 
   @override
-  _SocioListState createState() => _SocioListState();
+  _TipoDeporteListState createState() => _TipoDeporteListState();
 }
 
-class _SocioListState extends State<SocioList> {
-  //List<Socio>.empty(growable: true);
+class _TipoDeporteListState extends State<TipoDeporteList> {
+  //List<TipoDeporte>.empty(growable: true);
   bool isApiCallProcess = false;
 
   @override
@@ -27,7 +28,7 @@ class _SocioListState extends State<SocioList> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar( 
-        title: const Text('Listado de Socios'),
+        title: const Text('Listado de Tipos de Deportes'),
         elevation: 0,
       ),
       backgroundColor: Colors.grey[200],
@@ -35,20 +36,20 @@ class _SocioListState extends State<SocioList> {
         inAsyncCall: isApiCallProcess,
         opacity: 0.3,
         key: UniqueKey(),
-        child: loadSocios(widget.getAll),
+        child: loadTipoDeporte(widget.getAll),
       ),
     );    
   }
 
-  Widget loadSocios(bool getAll) {
+  Widget loadTipoDeporte(bool getAll) {
     return FutureBuilder(
-      future: getAll ? APISocio.getAllSocios() : APISocio.getSocios(),
+      future: getAll ? APITipoDeporte.getAllTipoDeportes() : APITipoDeporte.getTipoDeporte(),
       builder: (
         BuildContext context,
-        AsyncSnapshot<List<Socio>?> socios,
+        AsyncSnapshot<List<TipoDeporte>?> tipoDeporte,
       ) {
-        if(socios.hasData){
-          return sociosList(socios.data);
+        if(tipoDeporte.hasData){
+          return tipoDeporteList(tipoDeporte.data);
 
         }else{
           return const Center(child: CircularProgressIndicator());
@@ -57,7 +58,7 @@ class _SocioListState extends State<SocioList> {
       
       
   }
-  Widget sociosList(socios) {
+  Widget tipoDeporteList(tipoDeporte) {
     return SingleChildScrollView(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -78,34 +79,32 @@ class _SocioListState extends State<SocioList> {
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.blue,
                         padding: const EdgeInsets.symmetric(
-                          vertical: 10, horizontal: 30,),
+                          vertical: 10, horizontal: 10,),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(5),
                         ),
                       ),
-                      child: const Text(
-                        'INICIO',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 18,
-                        ),
-                      ),
+                      child: const Icon(
+                        Icons.home,
+                        color: Colors.black,
+                        size: 18,
+                      )
                     ),
                     ElevatedButton(
                       onPressed: () {
-                        Navigator.pushNamed(context, '/add-socio');
+                        Navigator.pushNamed(context, '/add-tipoDeporte');
                       
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.blue,
                         padding: const EdgeInsets.symmetric(
-                          vertical: 10, horizontal: 30,),
+                          vertical: 10, horizontal: 10,),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(5),
                         ),
                       ),
                       child: const Text(
-                        'Agregar Socio',
+                        'Agregar TipoDeporte',
                         style: TextStyle(
                           color: Colors.black,
                           fontSize: 18,
@@ -114,13 +113,13 @@ class _SocioListState extends State<SocioList> {
                     ),
                     widget.getAll ? Container() :  ElevatedButton(
                       onPressed: () {
-                        Navigator.pushNamed(context, '/list-socio', arguments: !widget.getAll);
+                        Navigator.pushNamed(context, '/list-tipoDeporte', arguments: !widget.getAll);
                         
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color.fromARGB(255, 95, 163, 218),
                         padding: const EdgeInsets.symmetric(
-                          vertical: 10, horizontal: 30,),
+                          vertical: 10, horizontal: 10,),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(5),
                         ),
@@ -138,12 +137,11 @@ class _SocioListState extends State<SocioList> {
               ),
               Table(
                 columnWidths: const {
-                  0: FlexColumnWidth(2),
-                  1: FlexColumnWidth(5),
-                  2: FlexColumnWidth(5),
-                  3: FlexColumnWidth(4),
-                  4: FlexColumnWidth(2),
-                  5: FlexColumnWidth(1.5),
+                  0: FlexColumnWidth(1),
+                  1: FlexColumnWidth(2.5),
+                  2: FlexColumnWidth(6),
+                  3: FlexColumnWidth(1),
+                  4: FlexColumnWidth(1),
                 },
                 children: [
                   const TableRow(
@@ -167,7 +165,7 @@ class _SocioListState extends State<SocioList> {
                         child: Padding(
                           padding: EdgeInsets.all(8.0),
                           child: Text(
-                            'Nombres',
+                            'Nombre',
                             style: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
@@ -179,19 +177,7 @@ class _SocioListState extends State<SocioList> {
                         child: Padding(
                           padding: EdgeInsets.all(8.0),
                           child: Text(
-                            'Apellidos',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ),
-                      TableCell(
-                        child: Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Text(
-                            'DNI',
+                            'Descripción',
                             style: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
@@ -225,18 +211,18 @@ class _SocioListState extends State<SocioList> {
                       ),
                     ],
                   ),
-                  ...socios.map<TableRow>((socio) {
+                  ...tipoDeporte.map<TableRow>((tipoDeporte) {
                   return TableRow(
                     decoration: const BoxDecoration(
                       color: Colors.white,
                     ),
-                    children: SocioItem(
-                        socio: socio,
-                        onDelete: (Socio socio) {
+                    children: TipoDeporteItem(
+                        tipoDeporte: tipoDeporte,
+                        onDelete: (TipoDeporte tipoDeporte) {
                           setState(() {
                             isApiCallProcess = true;
                           });
-                          APISocio.deleteSocio(socio.id!).then(
+                          APITipoDeporte.deleteTipoDeporte(tipoDeporte.id!).then(
                             (response) {
                               setState(() {
                                 isApiCallProcess = false;
@@ -253,15 +239,15 @@ class _SocioListState extends State<SocioList> {
                 shrinkWrap: true,
                 physics: const ClampingScrollPhysics(),
                 scrollDirection: Axis.vertical,
-                itemCount: socios.length,
+                itemCount: tipoDeporte.length,
                 itemBuilder: (context, index) {
                   return SocioItem(
-                    socio: socios[index],
-                    onDelete: (Socio socio) {
+                    tipoDeporte: tipoDeporte[index],
+                    onDelete: (TipoDeporte tipoDeporte) {
                       setState(() {
                         isApiCallProcess = true;
                       });
-                      APISocio.deleteSocio(socio.id!).then(
+                      APITipoDeporte.deleteSocio(tipoDeporte.id!).then(
                         (response) {
                           setState(() {
                             isApiCallProcess = false;

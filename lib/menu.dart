@@ -1,8 +1,7 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:ficha_inscripcion/pages/inicio.dart';
 import 'package:ficha_inscripcion/pages/socio/socio_list.dart';
+import 'package:ficha_inscripcion/pages/tipo_deporte/tipo_deporte_list.dart';
 
 class Menu extends StatefulWidget {
 
@@ -18,6 +17,8 @@ class MenuState extends State<Menu> {
         return const inicio();
       case 1:
         return const SocioList();
+      case 2:
+        return const TipoDeporteList();
       default:
         return const Text("Error");
     }
@@ -62,6 +63,14 @@ class MenuState extends State<Menu> {
               selected: (1 == _selectDrawerItem),
               onTap: () {
                 _onSelectItem(1);
+              },
+            ),
+            ListTile(
+              title: const Text("Tipos de Deportes"),
+              leading: const Icon(Icons.sports),
+              selected: (1 == _selectDrawerItem),
+              onTap: () {
+                _onSelectItem(2);
               },
             ),
           ]

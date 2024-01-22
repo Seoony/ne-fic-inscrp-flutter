@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:ficha_inscripcion/models/socio.dart';
-import 'package:ficha_inscripcion/services/api_socio.dart';
+import 'package:ficha_inscripcion/models/tipo_deporte.dart';
+import 'package:ficha_inscripcion/services/api_tipo_deporte.dart';
 import 'package:snippet_coder_utils/FormHelper.dart';
 import 'package:snippet_coder_utils/ProgressHUD.dart';
 import 'package:snippet_coder_utils/hex_color.dart';
 
-class SocioAddEdit extends StatefulWidget {
-  final Socio? socio;
-  const SocioAddEdit({Key? key, this.socio}) : super(key: key);
+class TipoDeporteAddEdit extends StatefulWidget {
+  final TipoDeporte? tipoDeporte;
+  const TipoDeporteAddEdit({Key? key, this.tipoDeporte}) : super(key: key);
 
   @override
-  _SocioAddEditState createState() => _SocioAddEditState();
+  _TipoDeporteAddEditState createState() => _TipoDeporteAddEditState();
 }
 
-class _SocioAddEditState extends State<SocioAddEdit> {
-  Socio? socio;
+class _TipoDeporteAddEditState extends State<TipoDeporteAddEdit> {
+  TipoDeporte? tipoDeporte;
   static final GlobalKey<FormState> globalFormKey = GlobalKey<FormState>();
   bool isApiCallProcess = false;
   bool isEditMode = false;
@@ -24,7 +24,7 @@ class _SocioAddEditState extends State<SocioAddEdit> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: const Text("Formulario de Socios"),
+          title: const Text("Formulario de Tipo de Deportes"),
           elevation: 0,
         ),
         backgroundColor: Colors.grey[200],
@@ -34,7 +34,7 @@ class _SocioAddEditState extends State<SocioAddEdit> {
           key: UniqueKey(),
           child: Form(
             key: globalFormKey,
-            child: socioForm(),
+            child: tipoDeporteForm(),
           ),
         ),
       ), 
@@ -44,19 +44,19 @@ class _SocioAddEditState extends State<SocioAddEdit> {
   @override
   void initState() {
     super.initState();
-    socio = widget.socio ?? Socio();
+    tipoDeporte = widget.tipoDeporte ?? TipoDeporte();
 
     Future.delayed(Duration.zero, () {
       if(ModalRoute.of(context)?.settings.arguments != null) {
         final Map arguments = ModalRoute.of(context)?.settings.arguments as Map;
-        socio = arguments['socio'];
+        tipoDeporte = arguments['tipoDeporte'];
         isEditMode = true;
         setState(() {});
       }
     });
   }
 
-  Widget socioForm() {
+  Widget tipoDeporteForm() {
     return SingleChildScrollView(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -69,18 +69,18 @@ class _SocioAddEditState extends State<SocioAddEdit> {
             ),
             child: FormHelper.inputFieldWidget(
               context,
-              "Socio Name",
-              "Nombre del Socio",
+              "TipoDeporte Name",
+              "Nombre del TipoDeporte",
               (onValidateVal) {
                 if (onValidateVal!.isEmpty || onValidateVal == null) {
-                  return 'Ingrese los nombres';
+                  return 'Ingrese el nombre';
                 }
                 return null;
               },
               (onSavedVal) =>{
-                socio!.nombres = onSavedVal,
+                tipoDeporte!.nombre = onSavedVal,
               },
-              initialValue: socio?.nombres ?? "",
+              initialValue: tipoDeporte?.nombre ?? "",
               obscureText: false,
               borderFocusColor: Colors.black,
             ),
@@ -92,31 +92,33 @@ class _SocioAddEditState extends State<SocioAddEdit> {
             ),
             child: FormHelper.inputFieldWidget(
               context,
-              "Socio Last Name",
-              "Apellidos del Socio",
+              "TipoDeporte Description",
+              "Descripción del Deporte",
               (onValidateVal) {
                 if (onValidateVal!.isEmpty || onValidateVal == null) {
-                  return 'Ingrese los apellidos';
+                  return 'Ingrese la descripción';
                 }
                 return null;
               },
               (onSavedVal) =>{
-                socio!.apellidos = onSavedVal,
+                tipoDeporte!.descripcion = onSavedVal,
               },
-              initialValue: socio?.apellidos ?? "",
+              initialValue: tipoDeporte?.descripcion ?? "",
               obscureText: false,
               borderFocusColor: Colors.black,
+              isMultiline: true,
+              maxLength: 600,
             ),
           ),
-          Padding(
+          /*Padding(
             padding: const EdgeInsets.only(
               bottom: 10,
               top: 10,
             ),
             child: FormHelper.inputFieldWidget(
               context,
-              "Socio DNI",
-              "DNI del Socio",
+              "TipoDeporte DNI",
+              "DNI del TipoDeporte",
               (onValidateVal) {
                 if (onValidateVal!.isEmpty || onValidateVal == null || onValidateVal.length != 8) {
                   return 'Ingrese el DNI, recuerde que son 8 digitos.';
@@ -124,13 +126,13 @@ class _SocioAddEditState extends State<SocioAddEdit> {
                 return null;
               },
               (onSavedVal) =>{
-                socio!.dni = onSavedVal,
+                tipoDeporte!.dni = onSavedVal,
               },
-              initialValue: socio?.dni ?? "",
+              initialValue: tipoDeporte?.dni ?? "",
               obscureText: false,
               borderFocusColor: Colors.black,
             ),
-          ),
+          ),*/
           const SizedBox(
             height: 20,
           ),
@@ -144,8 +146,8 @@ class _SocioAddEditState extends State<SocioAddEdit> {
                       setState(() {
                         isApiCallProcess = true;
                       });
-                      APISocio.saveSocio(
-                        socio!,
+                      APITipoDeporte.saveTipoDeporte(
+                        tipoDeporte!,
                         isEditMode,
                         ).then((response) {
                           setState(() {
@@ -154,13 +156,13 @@ class _SocioAddEditState extends State<SocioAddEdit> {
                           if(response){
                             Navigator.pushNamed(
                               context,
-                              '/list-socio',                          
+                              '/list-tipoDeporte',                          
                             );
                           } else {
                             FormHelper.showSimpleAlertDialog(
                               context,
                               "Negocios Electronicos",
-                              "Error al guardar el socio",
+                              "Error al guardar el tipoDeporte",
                               "Ok",
                               () {
                                 Navigator.of(context).pop();
