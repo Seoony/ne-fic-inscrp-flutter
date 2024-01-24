@@ -3,5 +3,5 @@ class Config {
   static const String API_URL = 'seoony.pythonanywhere.com';
   static const String sociosApi = '/socios/';
   static const String tipoDeportesApi = '/tipo_deportes/';
-  static const String fichaInscripcionApi = '/ficha_inscripcion/';
+  static const String fichaInscripcionApi = '/fichas_inscripciones/';
 }

@@ -12,8 +12,8 @@ List<FichaInscripcion> fichaInscripcionFromJson(String responseBody) {
 
 class FichaInscripcion {
   int? id;
-  Socio? socio;
-  TipoDeporte? tipoDeporte;
+  int? socio;
+  int? tipoDeporte;
   String? fechaInscripcion;
   double? monto;
   String? estado;
@@ -29,8 +29,8 @@ class FichaInscripcion {
 
   FichaInscripcion copyWith({
     int? id,
-    Socio? socio,
-    TipoDeporte? tipoDeporte,
+    int? socio,
+    int? tipoDeporte,
     String? fechaInscripcion,
     double? monto,
     String? estado,
@@ -51,10 +51,10 @@ class FichaInscripcion {
       data['id'] = id;
     }
     if (socio != null){
-      data['socio'] = socio!.toJson();
+      data['socio'] = socio;
     }
     if (tipoDeporte != null){
-      data['tipoDeporte'] = tipoDeporte!.toJson();
+      data['tipoDeporte'] = tipoDeporte;
     }
     if (fechaInscripcion != null){
       data['fechaInscripcion'] = fechaInscripcion;
@@ -71,8 +71,8 @@ class FichaInscripcion {
   static fromJson(json) {
     return FichaInscripcion(
       id: json['id'] as int?,
-      socio: json['socio'] != null ? Socio.fromJson(json['socio']) : null,
-      tipoDeporte: json['tipoDeporte'] != null ? TipoDeporte.fromJson(json['tipoDeporte']) : null,
+      socio: json['socio'] as int?,
+      tipoDeporte: json['tipoDeporte'] as int?,
       fechaInscripcion: json['fechaInscripcion'],
       monto: json['monto'],
       estado: json['estado'],

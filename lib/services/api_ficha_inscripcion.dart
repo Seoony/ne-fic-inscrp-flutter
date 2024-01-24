@@ -40,7 +40,7 @@ class APIFichaInscripcion {
     }
   }
 
-  static Future<bool> saveSocio(
+  static Future<bool> saveFichaInscripcion(
       FichaInscripcion fichaInscripcion, bool isEditMode
       ) async {
     var fichaInscripcionURL = Config.fichaInscripcionApi;
@@ -55,8 +55,8 @@ class APIFichaInscripcion {
     );
     var requestMethod = isEditMode ? "PUT" : "POST";
     var request = http.MultipartRequest(requestMethod, url);
-    request.fields['socio'] = fichaInscripcion.socio?.id! as String; 
-    request.fields['tipoDeporte'] = fichaInscripcion.tipoDeporte?.id! as String;
+    request.fields['socio'] = fichaInscripcion.socio?.toString() ?? ''; 
+    request.fields['tipoDeporte'] = fichaInscripcion.tipoDeporte?.toString() ?? '';
     request.fields['fechaInscripcion'] = fichaInscripcion.fechaInscripcion!;
     request.fields['monto'] = fichaInscripcion.monto!.toString();
     if(fichaInscripcion.estado == null){

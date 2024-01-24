@@ -1,3 +1,4 @@
+import 'package:ficha_inscripcion/pages/ficha_inscripcion/ficha_descripcion_list.dart';
 import 'package:flutter/material.dart';
 import 'package:ficha_inscripcion/pages/inicio.dart';
 import 'package:ficha_inscripcion/pages/socio/socio_list.dart';
@@ -16,8 +17,10 @@ class MenuState extends State<Menu> {
       case 0:
         return const inicio();
       case 1:
-        return const SocioList();
+        return const FichaInscripcionList();
       case 2:
+        return const SocioList();
+      case 3:
         return const TipoDeporteList();
       default:
         return const Text("Error");
@@ -58,11 +61,20 @@ class MenuState extends State<Menu> {
             ),
             const Divider(),
             ListTile(
+              title: const Text("Fichas de Inscripción"),
+              leading: const Icon(Icons.assignment),
+              selected: (1 == _selectDrawerItem),
+              onTap: () {
+                _onSelectItem(1);
+              },
+            ),
+            const Divider(),
+            ListTile(
               title: const Text("Socios"),
               leading: const Icon(Icons.people),
               selected: (1 == _selectDrawerItem),
               onTap: () {
-                _onSelectItem(1);
+                _onSelectItem(2);
               },
             ),
             ListTile(
@@ -70,7 +82,7 @@ class MenuState extends State<Menu> {
               leading: const Icon(Icons.sports),
               selected: (1 == _selectDrawerItem),
               onTap: () {
-                _onSelectItem(2);
+                _onSelectItem(3);
               },
             ),
           ]

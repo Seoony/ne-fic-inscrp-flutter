@@ -1,3 +1,5 @@
+import 'package:ficha_inscripcion/pages/ficha_inscripcion/ficha_descripcion_list.dart';
+import 'package:ficha_inscripcion/pages/ficha_inscripcion/ficha_inscripcion_add_edit.dart';
 import 'package:flutter/material.dart';
 import 'package:ficha_inscripcion/menu.dart';
 
@@ -42,6 +44,16 @@ class MyApp extends StatelessWidget {
           case '/list-tipoDeporte':
             final getAll = settings.arguments as bool? ?? false;
             return MaterialPageRoute(builder: (context) => TipoDeporteList(getAll: getAll));
+
+          case '/add-fichaInscripcion':
+            return MaterialPageRoute(builder: (context) => const FichInscripcionAddEdit());
+          case '/edit-fichaInscripcion':
+            final args = settings.arguments as Map<String, dynamic>;
+            final fichaInscripcion = args['fichaIncripcion'];
+            return MaterialPageRoute(builder: (context) => FichInscripcionAddEdit(fichaInscripcion: fichaInscripcion));
+          case '/list-fichaInscripcion':
+            final getAll = settings.arguments as bool? ?? false;
+            return MaterialPageRoute(builder: (context) => FichaInscripcionList(getAll: getAll));
           
           default:
             return MaterialPageRoute(builder: (context) => Menu());
