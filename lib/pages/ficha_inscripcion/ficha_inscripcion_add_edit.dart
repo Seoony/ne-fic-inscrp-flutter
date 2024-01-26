@@ -19,7 +19,7 @@ class FichInscripcionAddEdit extends StatefulWidget {
 
 class _FichaInscripcionAddEditState extends State<FichInscripcionAddEdit> {
   FichaInscripcion? fichaInscripcion;
-  static final GlobalKey<FormState> globalFormKey = GlobalKey<FormState>();
+  GlobalKey<FormState> globalFormKey = GlobalKey<FormState>();
   bool isApiCallProcess = false;
   bool isEditMode = false;
 
@@ -38,7 +38,7 @@ class _FichaInscripcionAddEditState extends State<FichInscripcionAddEdit> {
           key: UniqueKey(),
           child: Form(
             key: globalFormKey,
-            child: fichaIncripcionForm(),
+            child: fichaInscripcionForm(),
           ),
         ),
       ), 
@@ -48,6 +48,7 @@ class _FichaInscripcionAddEditState extends State<FichInscripcionAddEdit> {
   @override
   void initState() {
     super.initState();
+    globalFormKey = GlobalKey<FormState>();
     fichaInscripcion = widget.fichaInscripcion ?? FichaInscripcion();
 
     Future.delayed(Duration.zero, () {
@@ -60,7 +61,7 @@ class _FichaInscripcionAddEditState extends State<FichInscripcionAddEdit> {
     });
   }
 
-  Widget fichaIncripcionForm() {
+  Widget fichaInscripcionForm() {
     return FutureBuilder<List<Socio>?>(
       future: APISocio.getSocios(),
       builder: (BuildContext context, AsyncSnapshot<List<Socio>?> socioSnapshot) {
@@ -98,8 +99,8 @@ class _FichaInscripcionAddEditState extends State<FichInscripcionAddEdit> {
                             return null;
                           },
                           decoration: const InputDecoration(
-                            labelText: "FichaIncipcion Socio",
-                            hintText: "Socio de FichaInscripcion",
+                            labelText: "Socio",
+                            hintText: "Seleccione un Socio",
                             border: OutlineInputBorder(),
                           ),
                         ),
@@ -110,7 +111,7 @@ class _FichaInscripcionAddEditState extends State<FichInscripcionAddEdit> {
                           top: 10,
                         ),
                         child: DropdownButtonFormField<int>(
-                          value: fichaInscripcion?.tipoDeporte,
+                          value: fichaInscripcion?.tipo_deporte,
                           items: tipoDeporteSnapshot.data!.map((TipoDeporte tipoDeporte) {
                             return DropdownMenuItem<int>(
                               value: tipoDeporte.id,
@@ -118,7 +119,7 @@ class _FichaInscripcionAddEditState extends State<FichInscripcionAddEdit> {
                             );
                           }).toList(), onChanged: (int? newvalue) {
                             setState(() {
-                              fichaInscripcion?.tipoDeporte = newvalue;
+                              fichaInscripcion?.tipo_deporte = newvalue;
                             });
                           },
                           validator: (int? value) {
@@ -128,8 +129,8 @@ class _FichaInscripcionAddEditState extends State<FichInscripcionAddEdit> {
                             return null;
                           },
                           decoration: const InputDecoration(
-                            labelText: "FichaIncipcion Tipo Deporte",
-                            hintText: "Tipo de Deporte de FichaInscripcion",
+                            labelText: "Tipo Deporte",
+                            hintText: "Seleccione un Tipo de Deporte",
                             border: OutlineInputBorder(),
                           ),
                         ),
@@ -139,22 +140,64 @@ class _FichaInscripcionAddEditState extends State<FichInscripcionAddEdit> {
                           bottom: 10,
                           top: 10,
                         ),
-                        child:
-                          TextFormField(
-                            initialValue: fichaInscripcion?.monto?.toString(),
-                            keyboardType: TextInputType.numberWithOptions(decimal: true),
-                            onChanged: (String? newvalue) {
-                              setState(() {
-                                fichaInscripcion?.monto = double.parse(newvalue ?? '0');
-                              });
-                            },
-                            validator: (String? value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Ingrese el monto';
-                              }
-                              return null;
-                            },
+                        child: TextFormField(
+                          initialValue: fichaInscripcion?.monto_inscripcion?.toString(),
+                          keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                          onChanged: (String? newvalue) {
+                            setState(() {
+                              fichaInscripcion?.monto_inscripcion = double.parse(newvalue ?? '0');
+                            });
+                          },
+                          validator: (String? value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Ingrese el monto';
+                            }
+                            return null;
+                          },
+                          decoration: const InputDecoration(
+                            labelText: "Monto Inscripcion",
+                            hintText: "Ingrese el monto de la inscripcion",
+                            border: OutlineInputBorder(),
                           ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 16.0),
+                        child: ElevatedButton(
+                          onPressed: () {
+                            if(validateAndSave()) {
+                              setState(() {
+                                isApiCallProcess = true;
+                              });
+                              APIFichaInscripcion.saveFichaInscripcion(
+                                fichaInscripcion!,
+                                isEditMode,
+                                ).then((response) {
+                                  setState(() {
+                                    isApiCallProcess = false;
+                                  });
+                                  if(response){
+                                    Navigator.pushNamed(
+                                      context,
+                                      '/list-fichaInscripcion',                          
+                                    );
+                                  } else {
+                                    FormHelper.showSimpleAlertDialog(
+                                      context,
+                                      "Negocios Electronicos",
+                                      "Error al guardar el fichaInscripcion",
+                                      "Ok",
+                                      () {
+                                        Navigator.of(context).pop();
+                                      },
+                                    );
+                                  }
+                                },
+                              );       
+                            }
+                          },
+                          child: const Text('Guardar'),
+                        )
                       )
                     ],
                   ),

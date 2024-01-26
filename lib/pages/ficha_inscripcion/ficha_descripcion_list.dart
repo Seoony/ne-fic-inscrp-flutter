@@ -45,7 +45,7 @@ class _FichaInscripcionListState extends State<FichaInscripcionList> {
       future: getAll ? APIFichaInscripcion.getAllFichaInscripcion() : APIFichaInscripcion.getFichaInscripcion(),
       builder: (
         BuildContext context,
-        AsyncSnapshot<List<FichaInscripcion>?> fichaInscripcion
+        AsyncSnapshot<List<FichaInscripcion>?> fichaInscripcion,
       ) {
         if(fichaInscripcion.hasData){
           return fichaInscripcionList(fichaInscripcion.data);
@@ -78,17 +78,15 @@ class _FichaInscripcionListState extends State<FichaInscripcionList> {
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.blue,
                         padding: const EdgeInsets.symmetric(
-                          vertical: 10, horizontal: 30,),
+                          vertical: 10, horizontal: 5,),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(5),
                         ),
                       ),
-                      child: const Text(
-                        'INICIO',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 18,
-                        ),
+                      child: const Icon(
+                        Icons.home,
+                        color: Colors.black,
+                        size: 18,
                       ),
                     ),
                     ElevatedButton(
@@ -99,13 +97,13 @@ class _FichaInscripcionListState extends State<FichaInscripcionList> {
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.blue,
                         padding: const EdgeInsets.symmetric(
-                          vertical: 10, horizontal: 30,),
+                          vertical: 10, horizontal: 5,),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(5),
                         ),
                       ),
                       child: const Text(
-                        'Agregar Ficha Inscripción',
+                        '+ Ficha Inscripción',
                         style: TextStyle(
                           color: Colors.black,
                           fontSize: 18,
@@ -120,7 +118,7 @@ class _FichaInscripcionListState extends State<FichaInscripcionList> {
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color.fromARGB(255, 95, 163, 218),
                         padding: const EdgeInsets.symmetric(
-                          vertical: 10, horizontal: 30,),
+                          vertical: 10, horizontal: 5,),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(5),
                         ),
@@ -142,8 +140,9 @@ class _FichaInscripcionListState extends State<FichaInscripcionList> {
                   1: FlexColumnWidth(5),
                   2: FlexColumnWidth(5),
                   3: FlexColumnWidth(4),
-                  4: FlexColumnWidth(2),
+                  4: FlexColumnWidth(3),
                   5: FlexColumnWidth(1.5),
+                  6: FlexColumnWidth(1.5),
                 },
                 children: [
                   const TableRow(
@@ -167,7 +166,7 @@ class _FichaInscripcionListState extends State<FichaInscripcionList> {
                         child: Padding(
                           padding: EdgeInsets.all(8.0),
                           child: Text(
-                            'Nombres',
+                            'Socio',
                             style: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
@@ -179,7 +178,7 @@ class _FichaInscripcionListState extends State<FichaInscripcionList> {
                         child: Padding(
                           padding: EdgeInsets.all(8.0),
                           child: Text(
-                            'Apellidos',
+                            'TipoDeporte',
                             style: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
@@ -191,7 +190,19 @@ class _FichaInscripcionListState extends State<FichaInscripcionList> {
                         child: Padding(
                           padding: EdgeInsets.all(8.0),
                           child: Text(
-                            'DNI',
+                            'Fecha',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                      TableCell(
+                        child: Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Text(
+                            'Monto',
                             style: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,

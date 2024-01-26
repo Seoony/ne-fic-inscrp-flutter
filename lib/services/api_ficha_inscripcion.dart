@@ -55,10 +55,10 @@ class APIFichaInscripcion {
     );
     var requestMethod = isEditMode ? "PUT" : "POST";
     var request = http.MultipartRequest(requestMethod, url);
-    request.fields['socio'] = fichaInscripcion.socio?.toString() ?? ''; 
-    request.fields['tipoDeporte'] = fichaInscripcion.tipoDeporte?.toString() ?? '';
-    request.fields['fechaInscripcion'] = fichaInscripcion.fechaInscripcion!;
-    request.fields['monto'] = fichaInscripcion.monto!.toString();
+    request.fields['socio'] = fichaInscripcion.socio!.toString(); 
+    request.fields['tipo_deporte'] = fichaInscripcion.tipo_deporte!.toString();
+    request.fields['fecha_inscripcion'] = fichaInscripcion.fecha_inscripcion ?? "";
+    request.fields['monto_inscripcion'] = fichaInscripcion.monto_inscripcion!.toString();
     if(fichaInscripcion.estado == null){
       request.fields['estado'] = "A";
     }else{
@@ -66,6 +66,7 @@ class APIFichaInscripcion {
     }
 
     var response = await request.send();
+    print(response.statusCode);
     if (response.statusCode >= 200 && response.statusCode < 300){
       return true;
     }

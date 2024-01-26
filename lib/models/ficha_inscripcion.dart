@@ -1,7 +1,9 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'dart:convert';
 
-import 'package:ficha_inscripcion/models/socio.dart';
-import 'package:ficha_inscripcion/models/tipo_deporte.dart';
+//import 'package:ficha_inscripcion/models/socio.dart';
+//import 'package:ficha_inscripcion/models/tipo_deporte.dart';
 
 List<FichaInscripcion> fichaInscripcionFromJson(String responseBody) {
   final parsed = jsonDecode(responseBody).cast<Map<String, dynamic>>();
@@ -13,17 +15,17 @@ List<FichaInscripcion> fichaInscripcionFromJson(String responseBody) {
 class FichaInscripcion {
   int? id;
   int? socio;
-  int? tipoDeporte;
-  String? fechaInscripcion;
-  double? monto;
+  int? tipo_deporte;
+  String? fecha_inscripcion;
+  double? monto_inscripcion;
   String? estado;
 
   FichaInscripcion({
     this.id,
     this.socio,
-    this.tipoDeporte,
-    this.fechaInscripcion,
-    this.monto,
+    this.tipo_deporte,
+    this.fecha_inscripcion,
+    this.monto_inscripcion,
     this.estado,
   });
 
@@ -38,9 +40,9 @@ class FichaInscripcion {
     return FichaInscripcion(
       id: id ?? this.id,
       socio: socio ?? this.socio,
-      tipoDeporte: tipoDeporte ?? this.tipoDeporte,
-      fechaInscripcion: fechaInscripcion ?? this.fechaInscripcion,
-      monto: monto ?? this.monto,
+      tipo_deporte: tipo_deporte ?? this.tipo_deporte,
+      fecha_inscripcion: fecha_inscripcion ?? this.fecha_inscripcion,
+      monto_inscripcion: monto_inscripcion ?? this.monto_inscripcion,
       estado: estado ?? this.estado,
     );
   }
@@ -53,14 +55,14 @@ class FichaInscripcion {
     if (socio != null){
       data['socio'] = socio;
     }
-    if (tipoDeporte != null){
-      data['tipoDeporte'] = tipoDeporte;
+    if (tipo_deporte != null){
+      data['tipoDeporte'] = tipo_deporte;
     }
-    if (fechaInscripcion != null){
-      data['fechaInscripcion'] = fechaInscripcion;
+    if (fecha_inscripcion != null){
+      data['fechaInscripcion'] = fecha_inscripcion;
     }
-    if (monto != null){
-      data['monto'] = monto;
+    if (monto_inscripcion != null){
+      data['monto'] = monto_inscripcion;
     }
     if (estado != null) {
       data['estado'] = "A";
@@ -68,13 +70,13 @@ class FichaInscripcion {
     return data;
   }
   
-  static fromJson(json) {
+  factory FichaInscripcion.fromJson(Map<String, dynamic> json) {
     return FichaInscripcion(
       id: json['id'] as int?,
       socio: json['socio'] as int?,
-      tipoDeporte: json['tipoDeporte'] as int?,
-      fechaInscripcion: json['fechaInscripcion'],
-      monto: json['monto'],
+      tipo_deporte: json['tipo_deporte'] as int?,
+      fecha_inscripcion: json['fecha_inscripcion'],
+      monto_inscripcion: double.parse(json['monto_inscripcion']),
       estado: json['estado'],
     );
   }

@@ -49,7 +49,7 @@ class MyApp extends StatelessWidget {
             return MaterialPageRoute(builder: (context) => const FichInscripcionAddEdit());
           case '/edit-fichaInscripcion':
             final args = settings.arguments as Map<String, dynamic>;
-            final fichaInscripcion = args['fichaIncripcion'];
+            final fichaInscripcion = args['fichaInscripcion'];
             return MaterialPageRoute(builder: (context) => FichInscripcionAddEdit(fichaInscripcion: fichaInscripcion));
           case '/list-fichaInscripcion':
             final getAll = settings.arguments as bool? ?? false;

@@ -56,21 +56,21 @@ class FichaInscripcionItem extends StatelessWidget {
         Container(
           padding: const EdgeInsets.all(8),
           child: Text(
-            utf8.decode(latin1.encode("${fichaInscripcion!.tipoDeporte}")),
+            utf8.decode(latin1.encode("${fichaInscripcion!.tipo_deporte}")),
             style: textStyle,
           ),
         ),
         Container(
           padding: const EdgeInsets.all(8),
           child: Text(
-            "${fichaInscripcion!.fechaInscripcion}",
+            "${fichaInscripcion!.fecha_inscripcion}",
             style: textStyle,
           ),
         ),
         Container(
           padding: const EdgeInsets.all(8),
           child: Text(
-            "${fichaInscripcion!.monto}",
+            "${fichaInscripcion!.monto_inscripcion}",
             style: textStyle,
           ),
         ),
@@ -103,9 +103,9 @@ class FichaInscripcionItem extends StatelessWidget {
                               children: <Widget>[
                                 Text("ID: ${fichaInscripcion!.id}"),
                                 Text("Socio: ${utf8.decode(latin1.encode("${fichaInscripcion!.socio}"))}"),
-                                Text("TipoDeporte: ${utf8.decode(latin1.encode("${fichaInscripcion!.tipoDeporte}"))}"),
-                                Text("Fecha: ${fichaInscripcion!.fechaInscripcion}"),
-                                Text("Monto: ${fichaInscripcion!.monto}"),
+                                Text("TipoDeporte: ${utf8.decode(latin1.encode("${fichaInscripcion!.tipo_deporte}"))}"),
+                                Text("Fecha: ${fichaInscripcion!.fecha_inscripcion}"),
+                                Text("Monto: ${fichaInscripcion!.monto_inscripcion}"),
                                 Text("Estado: ${fichaInscripcion!.estado}"),
                               ],
                             ),
