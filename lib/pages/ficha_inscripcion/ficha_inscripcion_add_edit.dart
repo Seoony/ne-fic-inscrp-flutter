@@ -9,7 +9,7 @@ import 'package:ficha_inscripcion/models/tipo_deporte.dart';
 import 'package:ficha_inscripcion/services/api_ficha_inscripcion.dart';
 import 'package:snippet_coder_utils/FormHelper.dart';
 import 'package:snippet_coder_utils/ProgressHUD.dart';
-import 'package:snippet_coder_utils/hex_color.dart';
+//import 'package:snippet_coder_utils/hex_color.dart';
 
 class FichInscripcionAddEdit extends StatefulWidget {
   final FichaInscripcion? fichaInscripcion;
