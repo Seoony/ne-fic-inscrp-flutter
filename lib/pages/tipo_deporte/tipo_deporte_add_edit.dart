@@ -15,7 +15,7 @@ class TipoDeporteAddEdit extends StatefulWidget {
 
 class _TipoDeporteAddEditState extends State<TipoDeporteAddEdit> {
   TipoDeporte? tipoDeporte;
-  static final GlobalKey<FormState> globalFormKey = GlobalKey<FormState>();
+  GlobalKey<FormState> globalFormKey = GlobalKey<FormState>();
   bool isApiCallProcess = false;
   bool isEditMode = false;
 
@@ -44,12 +44,11 @@ class _TipoDeporteAddEditState extends State<TipoDeporteAddEdit> {
   @override
   void initState() {
     super.initState();
+    globalFormKey = GlobalKey<FormState>();
     tipoDeporte = widget.tipoDeporte ?? TipoDeporte();
 
     Future.delayed(Duration.zero, () {
-      if(ModalRoute.of(context)?.settings.arguments != null) {
-        final Map arguments = ModalRoute.of(context)?.settings.arguments as Map;
-        tipoDeporte = arguments['tipoDeporte'];
+      if(tipoDeporte?.id != null) {
         isEditMode = true;
         setState(() {});
       }

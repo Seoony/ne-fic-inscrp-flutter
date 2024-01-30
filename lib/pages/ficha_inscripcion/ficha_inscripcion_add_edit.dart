@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:ficha_inscripcion/services/api_socio.dart';
 import 'package:ficha_inscripcion/services/api_tipo_deporte.dart';
 import 'package:flutter/material.dart';
@@ -52,9 +54,9 @@ class _FichaInscripcionAddEditState extends State<FichInscripcionAddEdit> {
     fichaInscripcion = widget.fichaInscripcion ?? FichaInscripcion();
 
     Future.delayed(Duration.zero, () {
-      if(ModalRoute.of(context)?.settings.arguments != null) {
-        final Map arguments = ModalRoute.of(context)?.settings.arguments as Map;
-        fichaInscripcion = arguments['fichaInscripcion'];
+      if(fichaInscripcion?.id != null) {
+        //final Map arguments = ModalRoute.of(context)?.settings.arguments as Map;
+        //fichaInscripcion = arguments['fichaInscripcion'];
         isEditMode = true;
         setState(() {});
       }
@@ -63,11 +65,11 @@ class _FichaInscripcionAddEditState extends State<FichInscripcionAddEdit> {
 
   Widget fichaInscripcionForm() {
     return FutureBuilder<List<Socio>?>(
-      future: APISocio.getSocios(),
+      future: APISocio.getSimplifiedSocios(),
       builder: (BuildContext context, AsyncSnapshot<List<Socio>?> socioSnapshot) {
         if (socioSnapshot.hasData){
           return FutureBuilder<List<TipoDeporte>?>(
-            future: APITipoDeporte.getTipoDeporte(),
+            future: APITipoDeporte.getSimplifiedTipoDeporte(),
             builder: (BuildContext context, AsyncSnapshot<List<TipoDeporte>?> tipoDeporteSnapshot) {
               if (tipoDeporteSnapshot.hasData) {
                 return SingleChildScrollView(
@@ -81,15 +83,16 @@ class _FichaInscripcionAddEditState extends State<FichInscripcionAddEdit> {
                           top: 10,
                         ),
                         child: DropdownButtonFormField<int>(
-                          value: fichaInscripcion?.socio,
+                          value: fichaInscripcion!.socio?.id,
                           items: socioSnapshot.data!.map((Socio socio) {
                             return DropdownMenuItem<int>(
                               value: socio.id,
-                              child: Text(socio.nombres ?? ''),
+                              child: Text(
+                                utf8.decode(latin1.encode(socio.nombres ?? ''))),
                             );
                           }).toList(), onChanged: (int? newvalue) {
                             setState(() {
-                              fichaInscripcion?.socio = newvalue;
+                              fichaInscripcion!.socio = socioSnapshot.data!.firstWhere((Socio socio) => socio.id == newvalue);
                             });
                           },
                           validator: (int? value) {
@@ -111,15 +114,16 @@ class _FichaInscripcionAddEditState extends State<FichInscripcionAddEdit> {
                           top: 10,
                         ),
                         child: DropdownButtonFormField<int>(
-                          value: fichaInscripcion?.tipo_deporte,
+                          value: fichaInscripcion!.tipo_deporte?.id,
                           items: tipoDeporteSnapshot.data!.map((TipoDeporte tipoDeporte) {
                             return DropdownMenuItem<int>(
                               value: tipoDeporte.id,
-                              child: Text(tipoDeporte.nombre ?? ''),
+                              child: Text(
+                                utf8.decode(latin1.encode(tipoDeporte.nombre ?? ''))),
                             );
                           }).toList(), onChanged: (int? newvalue) {
                             setState(() {
-                              fichaInscripcion?.tipo_deporte = newvalue;
+                              fichaInscripcion!.tipo_deporte = tipoDeporteSnapshot.data!.firstWhere((TipoDeporte tipoDeporte) => tipoDeporte.id == newvalue);
                             });
                           },
                           validator: (int? value) {

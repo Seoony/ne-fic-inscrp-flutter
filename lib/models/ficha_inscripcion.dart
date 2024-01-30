@@ -2,8 +2,8 @@
 
 import 'dart:convert';
 
-//import 'package:ficha_inscripcion/models/socio.dart';
-//import 'package:ficha_inscripcion/models/tipo_deporte.dart';
+import 'package:ficha_inscripcion/models/socio.dart';
+import 'package:ficha_inscripcion/models/tipo_deporte.dart';
 
 List<FichaInscripcion> fichaInscripcionFromJson(String responseBody) {
   final parsed = jsonDecode(responseBody).cast<Map<String, dynamic>>();
@@ -14,8 +14,8 @@ List<FichaInscripcion> fichaInscripcionFromJson(String responseBody) {
 
 class FichaInscripcion {
   int? id;
-  int? socio;
-  int? tipo_deporte;
+  Socio? socio;
+  TipoDeporte? tipo_deporte;
   String? fecha_inscripcion;
   double? monto_inscripcion;
   String? estado;
@@ -31,10 +31,10 @@ class FichaInscripcion {
 
   FichaInscripcion copyWith({
     int? id,
-    int? socio,
-    int? tipoDeporte,
-    String? fechaInscripcion,
-    double? monto,
+    Socio? socio,
+    TipoDeporte? tipo_deporte,
+    String? fecha_inscripcion,
+    double? monto_inscripcion,
     String? estado,
   }) {
     return FichaInscripcion(
@@ -53,10 +53,10 @@ class FichaInscripcion {
       data['id'] = id;
     }
     if (socio != null){
-      data['socio'] = socio;
+      data['socio'] = socio!.toJson();
     }
     if (tipo_deporte != null){
-      data['tipoDeporte'] = tipo_deporte;
+      data['tipoDeporte'] = tipo_deporte!.toJson();
     }
     if (fecha_inscripcion != null){
       data['fechaInscripcion'] = fecha_inscripcion;
@@ -73,8 +73,8 @@ class FichaInscripcion {
   factory FichaInscripcion.fromJson(Map<String, dynamic> json) {
     return FichaInscripcion(
       id: json['id'] as int?,
-      socio: json['socio'] as int?,
-      tipo_deporte: json['tipo_deporte'] as int?,
+      socio: json['socio'] != null ? Socio.fromJson(json['socio']) : null,
+      tipo_deporte: json['tipo_deporte'] != null ? TipoDeporte.fromJson(json['tipo_deporte']) : null,
       fecha_inscripcion: json['fecha_inscripcion'],
       monto_inscripcion: double.parse(json['monto_inscripcion']),
       estado: json['estado'],

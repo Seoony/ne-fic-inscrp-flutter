@@ -15,7 +15,7 @@ class SocioAddEdit extends StatefulWidget {
 
 class _SocioAddEditState extends State<SocioAddEdit> {
   Socio? socio;
-  static final GlobalKey<FormState> globalFormKey = GlobalKey<FormState>();
+  GlobalKey<FormState> globalFormKey = GlobalKey<FormState>();
   bool isApiCallProcess = false;
   bool isEditMode = false;
 
@@ -44,12 +44,10 @@ class _SocioAddEditState extends State<SocioAddEdit> {
   @override
   void initState() {
     super.initState();
+    globalFormKey = GlobalKey<FormState>();
     socio = widget.socio ?? Socio();
-
     Future.delayed(Duration.zero, () {
-      if(ModalRoute.of(context)?.settings.arguments != null) {
-        final Map arguments = ModalRoute.of(context)?.settings.arguments as Map;
-        socio = arguments['socio'];
+      if(socio?.id != null) {
         isEditMode = true;
         setState(() {});
       }

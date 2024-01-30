@@ -23,6 +23,23 @@ class APITipoDeporte {
     }
   }
 
+  static Future<List<TipoDeporte>?> getSimplifiedTipoDeporte() async {
+    Map<String, String> requestHeaders = {
+      'Content-Type': 'application/json',
+    };
+    var url = Uri.https(
+      Config.API_URL,
+      Config.simplifiedTipoDeportesApi,
+    );
+    var response = await client.get(url, headers: requestHeaders);
+    if (response.statusCode == 200) {
+      return compute(tipoDeporteFromJson, response.body);
+    }
+    else {
+      return null;
+    }
+  }
+
   static Future<List<TipoDeporte>?> getAllTipoDeportes() async {
     Map<String, String> requestHeaders = {
       'Content-Type': 'application/json',

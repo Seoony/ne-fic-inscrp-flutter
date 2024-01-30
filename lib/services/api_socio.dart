@@ -23,6 +23,23 @@ class APISocio {
     }
   }
 
+  static Future<List<Socio>?> getSimplifiedSocios() async {
+    Map<String, String> requestHeaders = {
+      'Content-Type': 'application/json',
+    };
+    var url = Uri.https(
+      Config.API_URL,
+      Config.simplifiedSociosApi,
+    );
+    var response = await client.get(url, headers: requestHeaders);
+    if (response.statusCode == 200) {
+      return compute(socioFromJson, response.body);
+    }
+    else {
+      return null;
+    }
+  }
+
   static Future<List<Socio>?> getAllSocios() async {
     Map<String, String> requestHeaders = {
       'Content-Type': 'application/json',

@@ -67,4 +67,9 @@ class Socio {
     );
   }
 
+  @override
+  String toString() {
+    return 'Socio{id: $id, nombres: $nombres, apellidos: $apellidos, dni: $dni, estado: $estado}';
+  }
+
 }

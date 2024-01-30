@@ -18,9 +18,19 @@ class _FichaInscripcionListState extends State<FichaInscripcionList> {
   //List<Socio>.empty(growable: true);
   bool isApiCallProcess = false;
 
+  TextEditingController searchController = TextEditingController();
+  List<FichaInscripcion> fichaInscripcion = [];
+  List<FichaInscripcion> fichaInscripcionFiltered = [];
+
   @override
   void initState() {
     super.initState();
+    searchController.addListener(() {
+      setState(() {
+        
+        
+      });
+    });
   }
 
   @override
@@ -29,6 +39,34 @@ class _FichaInscripcionListState extends State<FichaInscripcionList> {
       appBar: AppBar( 
         title: const Text('Listado de Ficha de Inscripción'),
         elevation: 0,
+        actions: <Widget>[
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Flexible(
+                fit: FlexFit.loose,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    width: 200,
+                    child: TextField(
+                      controller: searchController,
+                      decoration: const InputDecoration(
+                        
+                        hintText: 'Buscar',
+                        fillColor: Colors.white,
+                        suffixIcon: Icon(Icons.search),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          )
+        ],
       ),
       backgroundColor: Colors.grey[200],
       body: ProgressHUD(
@@ -48,7 +86,18 @@ class _FichaInscripcionListState extends State<FichaInscripcionList> {
         AsyncSnapshot<List<FichaInscripcion>?> fichaInscripcion,
       ) {
         if(fichaInscripcion.hasData){
-          return fichaInscripcionList(fichaInscripcion.data);
+          List<FichaInscripcion>? fichaInscripcionFiltered = fichaInscripcion.data;
+          if (searchController.text.isNotEmpty) {
+            fichaInscripcionFiltered = fichaInscripcionFiltered!.where((element) {
+              return element.socio!.nombres!.toLowerCase().contains(searchController.text.toLowerCase()) ||
+              element.socio!.apellidos!.toLowerCase().contains(searchController.text.toLowerCase()) ||
+              element.tipo_deporte!.nombre!.toLowerCase().contains(searchController.text.toLowerCase()) ||
+              element.fecha_inscripcion!.toLowerCase().contains(searchController.text.toLowerCase()) ||
+              element.monto_inscripcion!.toString().toLowerCase().contains(searchController.text.toLowerCase()) ||
+              element.estado!.toLowerCase().contains(searchController.text.toLowerCase());
+            }).toList();
+          }
+          return fichaInscripcionList(fichaInscripcionFiltered);
 
         }else{
           return const Center(child: CircularProgressIndicator());
@@ -137,10 +186,10 @@ class _FichaInscripcionListState extends State<FichaInscripcionList> {
               Table(
                 columnWidths: const {
                   0: FlexColumnWidth(2),
-                  1: FlexColumnWidth(5),
-                  2: FlexColumnWidth(5),
+                  1: FlexColumnWidth(6),
+                  2: FlexColumnWidth(4),
                   3: FlexColumnWidth(4),
-                  4: FlexColumnWidth(3),
+                  4: FlexColumnWidth(2.5),
                   5: FlexColumnWidth(1.5),
                   6: FlexColumnWidth(1.5),
                 },
@@ -178,7 +227,7 @@ class _FichaInscripcionListState extends State<FichaInscripcionList> {
                         child: Padding(
                           padding: EdgeInsets.all(8.0),
                           child: Text(
-                            'TipoDeporte',
+                            'Tipo de Deporte',
                             style: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,

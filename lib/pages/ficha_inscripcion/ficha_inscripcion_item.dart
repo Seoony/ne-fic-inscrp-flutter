@@ -49,14 +49,14 @@ class FichaInscripcionItem extends StatelessWidget {
         Container(
           padding: const EdgeInsets.all(8),
           child: Text(
-            utf8.decode(latin1.encode("${fichaInscripcion!.socio}")),
+            utf8.decode(latin1.encode("${fichaInscripcion!.socio!.nombres} ${fichaInscripcion!.socio!.apellidos}")),
             style: textStyle,
           ),
         ),
         Container(
           padding: const EdgeInsets.all(8),
           child: Text(
-            utf8.decode(latin1.encode("${fichaInscripcion!.tipo_deporte}")),
+            utf8.decode(latin1.encode("${fichaInscripcion!.tipo_deporte!.nombre}")),
             style: textStyle,
           ),
         ),

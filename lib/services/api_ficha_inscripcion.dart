@@ -41,8 +41,8 @@ class APIFichaInscripcion {
   }
 
   static Future<bool> saveFichaInscripcion(
-      FichaInscripcion fichaInscripcion, bool isEditMode
-      ) async {
+    FichaInscripcion fichaInscripcion, bool isEditMode
+    ) async {
     var fichaInscripcionURL = Config.fichaInscripcionApi;
     if (isEditMode) {
       fichaInscripcionURL += "${fichaInscripcion.id}/update/";
@@ -55,8 +55,8 @@ class APIFichaInscripcion {
     );
     var requestMethod = isEditMode ? "PUT" : "POST";
     var request = http.MultipartRequest(requestMethod, url);
-    request.fields['socio'] = fichaInscripcion.socio!.toString(); 
-    request.fields['tipo_deporte'] = fichaInscripcion.tipo_deporte!.toString();
+    request.fields['socio'] = fichaInscripcion.socio!.id.toString(); 
+    request.fields['tipo_deporte'] = fichaInscripcion.tipo_deporte!.id.toString();
     request.fields['fecha_inscripcion'] = fichaInscripcion.fecha_inscripcion ?? "";
     request.fields['monto_inscripcion'] = fichaInscripcion.monto_inscripcion!.toString();
     if(fichaInscripcion.estado == null){
@@ -66,7 +66,6 @@ class APIFichaInscripcion {
     }
 
     var response = await request.send();
-    print(response.statusCode);
     if (response.statusCode >= 200 && response.statusCode < 300){
       return true;
     }
