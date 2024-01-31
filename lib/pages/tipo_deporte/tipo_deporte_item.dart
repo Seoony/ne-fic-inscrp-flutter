@@ -103,7 +103,7 @@ class TipoDeporteItem extends StatelessWidget {
                               Navigator.of(context).pushNamed(
                                 '/edit-tipoDeporte',
                                 arguments: {
-                                  'TipoDeporte': tipoDeporte,
+                                  'tipoDeporte': tipoDeporte,
                                 },
                               );
                             },

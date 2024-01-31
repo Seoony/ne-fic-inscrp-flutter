@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:ficha_inscripcion/models/tipo_deporte.dart';
 import 'package:ficha_inscripcion/services/api_tipo_deporte.dart';
@@ -46,6 +48,7 @@ class _TipoDeporteAddEditState extends State<TipoDeporteAddEdit> {
     super.initState();
     globalFormKey = GlobalKey<FormState>();
     tipoDeporte = widget.tipoDeporte ?? TipoDeporte();
+    print(tipoDeporte?.nombre);
 
     Future.delayed(Duration.zero, () {
       if(tipoDeporte?.id != null) {
@@ -79,7 +82,7 @@ class _TipoDeporteAddEditState extends State<TipoDeporteAddEdit> {
               (onSavedVal) =>{
                 tipoDeporte!.nombre = onSavedVal,
               },
-              initialValue: tipoDeporte?.nombre ?? "",
+              initialValue: utf8.decode(latin1.encode(tipoDeporte?.nombre ?? "")),
               obscureText: false,
               borderFocusColor: Colors.black,
             ),
@@ -102,7 +105,7 @@ class _TipoDeporteAddEditState extends State<TipoDeporteAddEdit> {
               (onSavedVal) =>{
                 tipoDeporte!.descripcion = onSavedVal,
               },
-              initialValue: tipoDeporte?.descripcion ?? "",
+              initialValue: utf8.decode(latin1.encode(tipoDeporte?.descripcion ?? "")),
               obscureText: false,
               borderFocusColor: Colors.black,
               isMultiline: true,

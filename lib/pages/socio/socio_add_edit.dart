@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:ficha_inscripcion/models/socio.dart';
 import 'package:ficha_inscripcion/services/api_socio.dart';
@@ -46,6 +48,7 @@ class _SocioAddEditState extends State<SocioAddEdit> {
     super.initState();
     globalFormKey = GlobalKey<FormState>();
     socio = widget.socio ?? Socio();
+
     Future.delayed(Duration.zero, () {
       if(socio?.id != null) {
         isEditMode = true;
@@ -78,7 +81,7 @@ class _SocioAddEditState extends State<SocioAddEdit> {
               (onSavedVal) =>{
                 socio!.nombres = onSavedVal,
               },
-              initialValue: socio?.nombres ?? "",
+              initialValue: utf8.decode(latin1.encode(socio?.nombres ?? "")),
               obscureText: false,
               borderFocusColor: Colors.black,
             ),
@@ -101,7 +104,7 @@ class _SocioAddEditState extends State<SocioAddEdit> {
               (onSavedVal) =>{
                 socio!.apellidos = onSavedVal,
               },
-              initialValue: socio?.apellidos ?? "",
+              initialValue: utf8.decode(latin1.encode(socio?.apellidos ?? "")),
               obscureText: false,
               borderFocusColor: Colors.black,
             ),
